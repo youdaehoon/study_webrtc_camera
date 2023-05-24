@@ -21,6 +21,7 @@ export default function Home() {
         onTakePhoto={(dataUri) => {
           handleTakePhoto(dataUri);
         }}
+        idealFacingMode="environment"
       />
     </div>
   );
