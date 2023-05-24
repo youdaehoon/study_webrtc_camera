@@ -18,6 +18,7 @@ export default function Home() {
       <h1>web rtc camera</h1>
       <br />
       <Camera
+        isMaxResolution={true}
         onTakePhoto={(dataUri) => {
           handleTakePhoto(dataUri);
         }}
