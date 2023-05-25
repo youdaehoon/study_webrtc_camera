@@ -1,9 +1,11 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
+import { ref, uploadBytes } from "@firebase/storage";
+import { storage } from "@/firebase";
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
