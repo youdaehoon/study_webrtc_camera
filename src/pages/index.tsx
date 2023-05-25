@@ -39,14 +39,18 @@ export default function Home() {
     // handleSubmit(dataUri);
   }
 
+  const lock = async (screen: Screen) => {
+    try {
+      await screen.orientation.lock("portrait");
+      alert("스크린 회전방지");
+    } catch (e) {
+      alert("실패");
+    }
+  };
+
   useEffect(() => {
     if (typeof screen !== "undefined" && screen.orientation) {
-      try {
-        alert("스크린 회전방지");
-        screen.orientation.lock("portrait");
-      } catch (e) {
-        alert("실패");
-      }
+      lock(screen);
     }
   }, []);
   function dataURItoBlob(dataURI: string) {
