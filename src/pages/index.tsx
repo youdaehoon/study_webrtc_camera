@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
@@ -13,8 +13,14 @@ export default function Home() {
   const [url, setUrl] = useState<string>("");
   const [showNav, setShowNav] = useState<boolean>(true);
 
+  const [myScreen, setScreen] = useState<Screen>();
   const refInput = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (screen) {
+      setScreen(screen);
+    }
+  }, []);
   function handleTakePhoto(dataUri: string) {
     // Do stuff with the photo...
     console.log("takePhoto");
@@ -59,6 +65,7 @@ export default function Home() {
       </Head>
       {url === "" ? (
         <div>
+          {myScreen?.orientation.type}
           <h1>web rtc camera</h1>
 
           <Camera
