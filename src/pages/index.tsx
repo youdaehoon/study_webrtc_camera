@@ -13,7 +13,7 @@ export default function Home() {
   const [url, setUrl] = useState<string>("");
   const [showNav, setShowNav] = useState<boolean>(true);
 
-  const [myScreen, setScreen] = useState<Screen>();
+  const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
 
@@ -21,12 +21,11 @@ export default function Home() {
     function handleOrientationChange() {
       alert("화면회전감지");
       if (typeof screen.orientation !== "undefined") {
-        setScreen(screen);
+        setOrientation(screen.orientation.type);
       }
     }
 
     if (screen) {
-      setScreen(screen);
       alert("스크린객체 있음");
     }
     window.addEventListener("orientationchange", handleOrientationChange);
@@ -78,8 +77,8 @@ export default function Home() {
       </Head>
       {url === "" ? (
         <div>
-          v2
-          {myScreen?.orientation.type}
+          v3
+          {orientaion}
           <h1>web rtc camera</h1>
           <Camera
             isMaxResolution={true}
