@@ -39,16 +39,16 @@
   position: absolute;
   bottom: 5rem;
   left: 50%;
-  width: 5rem;
-  height: 5rem;
+  width: 10rem;
+  height: 10rem;
   transform: translate(-50%, 50%);
-  border-radius: 5rem;
+  border-radius: 10rem;
 
   cursor: pointer;
 }
 .layout_nav button {
   width: 50%;
-  height: 5rem;
+  height: 10rem;
   cursor: pointer;
 }
 .layout_container {
