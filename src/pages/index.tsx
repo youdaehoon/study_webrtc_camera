@@ -19,6 +19,7 @@ export default function Home() {
   useEffect(() => {
     if (screen) {
       setScreen(screen);
+      alert("스크린객체 있음");
     }
   }, []);
   function handleTakePhoto(dataUri: string) {
