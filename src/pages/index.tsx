@@ -43,7 +43,7 @@ export default function Home() {
     if (screen) {
       try {
         alert("스크린 회전방지");
-        screen.orientation.unlock();
+        screen.orientation.lock("portrait");
       } catch (e) {
         alert("실패");
       }
