@@ -26,9 +26,6 @@ export default function Home() {
     }
     handleOrientationChange();
 
-    if (screen) {
-      alert("스크린객체 있음");
-    }
     window.addEventListener("orientationchange", handleOrientationChange);
     return () => {
       window.removeEventListener("orientationchange", handleOrientationChange);
@@ -41,6 +38,17 @@ export default function Home() {
 
     // handleSubmit(dataUri);
   }
+
+  useEffect(() => {
+    if (screen) {
+      try {
+        alert("스크린 회전방지");
+        screen.orientation.unlock();
+      } catch (e) {
+        alert("실패");
+      }
+    }
+  }, []);
   function dataURItoBlob(dataURI: string) {
     const byteString = atob(dataURI.split(",")[1]);
     const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
