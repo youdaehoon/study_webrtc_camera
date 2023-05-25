@@ -24,6 +24,7 @@ export default function Home() {
         setOrientation(screen.orientation.type);
       }
     }
+    handleOrientationChange();
 
     if (screen) {
       alert("스크린객체 있음");
@@ -77,9 +78,12 @@ export default function Home() {
       </Head>
       {url === "" ? (
         <div>
-          v3
-          {orientaion}
-          <h1>web rtc camera</h1>
+          <div style={{ position: "absolute", zIndex: "2" }}>
+            v4
+            {orientaion}
+            <h1>web rtc camera</h1>
+          </div>
+
           <Camera
             isMaxResolution={true}
             onTakePhoto={(dataUri) => {
