@@ -109,24 +109,39 @@ export default function Home() {
 
           <div className={styles.layout}>
             <h2>사진을 확인하세요</h2>
-            <div
-              className={`${styles.layout_container} ${
-                showNav ? styles.show : styles.hide
-              }`}
-            >
-              <input
-                style={{ position: "absolute", bottom: "5rem" }}
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="저장이름 입력"
-                ref={refInput}
-              ></input>
-              <div className={`${styles.layout_nav}  `}>
+            <div className={`${styles.layout_container} `}>
+              <div
+                className={`${styles.layout_nav}  ${
+                  showNav ? styles.show : styles.hide
+                }`}
+              >
                 <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                   className={styles.layout_nav_grip}
-                  onClick={() => setShowNav((prev) => !prev)}
-                ></div>
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowNav((prev) => !prev);
+                  }}
+                >
+                  <input
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      outline: "none",
+                      width: "8rem",
+                      border: "none",
+                      backgroundColor: "tomato",
+                    }}
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="저장이름 입력"
+                    ref={refInput}
+                  ></input>
+                </div>
                 <button onClick={() => handleSubmit(url)}>전송</button>
                 <button onClick={() => setUrl("")}>다시찍기</button>
               </div>
