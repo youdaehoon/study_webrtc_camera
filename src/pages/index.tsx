@@ -40,7 +40,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (screen) {
+    if (typeof screen !== "undefined" && screen.orientation) {
       try {
         alert("스크린 회전방지");
         screen.orientation.lock("portrait");
