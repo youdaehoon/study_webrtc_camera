@@ -14,13 +14,24 @@ export default function Home() {
   const [showNav, setShowNav] = useState<boolean>(true);
 
   const [myScreen, setScreen] = useState<Screen>();
+
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    function handleOrientationChange() {
+      if (typeof screen.orientation !== "undefined") {
+        setScreen(screen);
+      }
+    }
+
     if (screen) {
       setScreen(screen);
       alert("스크린객체 있음");
     }
+    window.addEventListener("orientationchange", handleOrientationChange);
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
   }, []);
   function handleTakePhoto(dataUri: string) {
     // Do stuff with the photo...
