@@ -16,30 +16,6 @@ export default function Home() {
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
-  const lock = async (window: Window & typeof globalThis) => {
-    try {
-      console.log("스크린 회전방지 시작");
-      const res = await window.screen.orientation.lock("portrait");
-      console.log(res);
-      console.log("여기안와?");
-      alert("스크린 회전방지");
-    } catch (e) {
-      console.log(e);
-
-      alert("스크린 회전방지 실패");
-    }
-  };
-  const handleFullscreen = async (screen: Screen) => {
-    if (document.documentElement.requestFullscreen) {
-      try {
-        await document.documentElement.requestFullscreen();
-        console.log("full screen");
-        if (window) lock(window);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
 
   useEffect(() => {
     function handleOrientationChange() {
@@ -53,11 +29,7 @@ export default function Home() {
       window.removeEventListener("orientationchange", handleOrientationChange);
     };
   }, []);
-  useEffect(() => {
-    if (typeof screen !== "undefined" && screen.orientation && camera) {
-      handleFullscreen(screen);
-    }
-  }, [camera]);
+
   function handleTakePhoto(dataUri: string) {
     // Do stuff with the photo...
     console.log("takePhoto");
@@ -106,20 +78,19 @@ export default function Home() {
               {orientaion}
               <h1>web rtc camera</h1>
             </div>
-            {camera ? (
-              <div>{orientaion}</div>
-            ) : (
-              // <Camera
-              //   isDisplayStartCameraError={true}
-              //   isMaxResolution={true}
-              //   onTakePhoto={(dataUri) => {
-              //     handleTakePhoto(dataUri);
-              //   }}
-              //   idealFacingMode="environment"
-              // />
-              <div style={{ zIndex: "30", position: "relative" }}>
-                <button onClick={() => setCamera(true)}>카메라 활성화</button>
+            {orientaion?.includes("portrait") || orientaion === undefined ? (
+              <div>
+                <Camera
+                  isDisplayStartCameraError={true}
+                  isMaxResolution={true}
+                  onTakePhoto={(dataUri) => {
+                    handleTakePhoto(dataUri);
+                  }}
+                  idealFacingMode="environment"
+                />
               </div>
+            ) : (
+              <h1>화면의 회전방지를 설정해주세요!</h1>
             )}
 
             <br />
