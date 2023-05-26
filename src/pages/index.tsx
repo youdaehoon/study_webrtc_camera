@@ -19,7 +19,12 @@ export default function Home() {
 
   const handleFullscreen = async () => {
     if (document.documentElement.requestFullscreen) {
-      await document.documentElement.requestFullscreen();
+      try {
+        await document.documentElement.requestFullscreen();
+        console.log("full screen");
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
