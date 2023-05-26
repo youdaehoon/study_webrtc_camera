@@ -11,10 +11,7 @@ export default function Home() {
   const [title, setTitle] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [showNav, setShowNav] = useState<boolean>(true);
-  const [showErr, setShowErr] = useState<boolean>(true);
-  const [errMsg, setErrMsg] = useState<string>("");
-
-  const refContainer = useRef<HTMLDivElement>(null);
+  const [camera, setCamera] = useState<boolean>(false);
 
   const [orientaion, setOrientation] = useState<OrientationType>();
 
@@ -27,11 +24,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (typeof screen !== "undefined" && screen.orientation) {
+    if (typeof screen !== "undefined" && screen.orientation && camera) {
       handleFullscreen();
       lock(screen);
     }
-  }, []);
+  }, [camera]);
 
   useEffect(() => {
     function handleOrientationChange() {
@@ -95,33 +92,16 @@ export default function Home() {
     }
   };
   return (
-    <div ref={refContainer}>
-      <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (document.documentElement) {
-                document.documentElement.requestFullscreen();
-              }
-            `,
-          }}
-        />
-      </Head>
-      {showErr ? (
-        <>
-          <span>{errMsg}</span>
-          <button onClick={() => setShowErr(false)}>에러 끄기</button>
-        </>
-      ) : (
-        <div>
-          {url === "" ? (
-            <div>
-              <div style={{ position: "absolute", zIndex: "2" }}>
-                v4
-                {orientaion}
-                <h1>web rtc camera</h1>
-              </div>
-
+    <div>
+      <div>
+        {url === "" ? (
+          <div>
+            <div style={{ position: "absolute", zIndex: "2" }}>
+              v4
+              {orientaion}
+              <h1>web rtc camera</h1>
+            </div>
+            {camera ? (
               <Camera
                 isDisplayStartCameraError={true}
                 isMaxResolution={true}
@@ -130,58 +110,63 @@ export default function Home() {
                 }}
                 idealFacingMode="environment"
               />
-              <br />
-            </div>
-          ) : (
-            <div>
-              <div className={styles.image_container}>
-                <img className={styles.image} src={url} alt="preview" />
+            ) : (
+              <div style={{ zIndex: "30", position: "relative" }}>
+                <button onClick={() => setCamera(true)}>카메라 활성화</button>
               </div>
+            )}
 
-              <div className={styles.layout}>
-                <h2>사진을 확인하세요</h2>
-                <div className={`${styles.layout_container} `}>
+            <br />
+          </div>
+        ) : (
+          <div>
+            <div className={styles.image_container}>
+              <img className={styles.image} src={url} alt="preview" />
+            </div>
+
+            <div className={styles.layout}>
+              <h2>사진을 확인하세요</h2>
+              <div className={`${styles.layout_container} `}>
+                <div
+                  className={`${styles.layout_nav}  ${
+                    showNav ? styles.show : styles.hide
+                  }`}
+                >
                   <div
-                    className={`${styles.layout_nav}  ${
-                      showNav ? styles.show : styles.hide
-                    }`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    className={styles.layout_nav_grip}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowNav((prev) => !prev);
+                    }}
                   >
-                    <div
+                    <input
+                      onClick={(e) => e.stopPropagation()}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        outline: "none",
+                        width: "8rem",
+                        border: "none",
+                        backgroundColor: "tomato",
                       }}
-                      className={styles.layout_nav_grip}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowNav((prev) => !prev);
-                      }}
-                    >
-                      <input
-                        onClick={(e) => e.stopPropagation()}
-                        style={{
-                          outline: "none",
-                          width: "8rem",
-                          border: "none",
-                          backgroundColor: "tomato",
-                        }}
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="저장이름 입력"
-                        ref={refInput}
-                      ></input>
-                    </div>
-                    <button onClick={() => handleSubmit(url)}>전송</button>
-                    <button onClick={() => setUrl("")}>다시찍기</button>
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="저장이름 입력"
+                      ref={refInput}
+                    ></input>
                   </div>
+                  <button onClick={() => handleSubmit(url)}>전송</button>
+                  <button onClick={() => setUrl("")}>다시찍기</button>
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
