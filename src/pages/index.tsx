@@ -16,10 +16,10 @@ export default function Home() {
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
-  const lock = async (screen: Screen) => {
+  const lock = async (window: Window & typeof globalThis) => {
     try {
       console.log("스크린 회전방지 시작");
-      const res = await screen.orientation.lock("portrait");
+      const res = await window.screen.orientation.lock("portrait");
       console.log(res);
       console.log("여기안와?");
       alert("스크린 회전방지");
@@ -34,8 +34,7 @@ export default function Home() {
       try {
         await document.documentElement.requestFullscreen();
         console.log("full screen");
-
-        lock(screen);
+        if (window) lock(window);
       } catch (e) {
         console.log(e);
       }
