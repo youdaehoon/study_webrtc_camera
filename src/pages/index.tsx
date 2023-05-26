@@ -108,15 +108,16 @@ export default function Home() {
               <h1>web rtc camera</h1>
             </div>
             {camera ? (
-              <Camera
-                isDisplayStartCameraError={true}
-                isMaxResolution={true}
-                onTakePhoto={(dataUri) => {
-                  handleTakePhoto(dataUri);
-                }}
-                idealFacingMode="environment"
-              />
+              <div>{orientaion}</div>
             ) : (
+              // <Camera
+              //   isDisplayStartCameraError={true}
+              //   isMaxResolution={true}
+              //   onTakePhoto={(dataUri) => {
+              //     handleTakePhoto(dataUri);
+              //   }}
+              //   idealFacingMode="environment"
+              // />
               <div style={{ zIndex: "30", position: "relative" }}>
                 <button onClick={() => setCamera(true)}>카메라 활성화</button>
               </div>
