@@ -57,12 +57,13 @@ export default function Home() {
 
   const lock = async (screen: Screen) => {
     try {
+      console.log("스크린 회전방지 시작");
       await screen.orientation.lock("portrait");
       alert("스크린 회전방지");
     } catch (e) {
       console.log(e);
 
-      alert("실패");
+      alert("스크린 회전방지 실패");
     }
   };
 
