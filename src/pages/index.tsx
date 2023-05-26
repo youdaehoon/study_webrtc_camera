@@ -20,8 +20,15 @@ export default function Home() {
 
   const refInput = useRef<HTMLInputElement>(null);
 
+  const handleFullscreen = async () => {
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    }
+  };
+
   useEffect(() => {
     if (typeof screen !== "undefined" && screen.orientation) {
+      handleFullscreen();
       lock(screen);
     }
   }, []);
