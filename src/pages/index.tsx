@@ -13,12 +13,15 @@ export default function Home() {
   const [showErr, setShowErr] = useState<boolean>(true);
   const [errMsg, setErrMsg] = useState<string>("");
 
+  const refContainer = useRef<HTMLDivElement>(null);
+
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (typeof screen !== "undefined" && screen.orientation) {
+      document.documentElement.requestFullscreen();
       lock(screen);
     }
   }, []);
@@ -85,7 +88,7 @@ export default function Home() {
     }
   };
   return (
-    <div>
+    <div ref={refContainer}>
       {showErr ? (
         <>
           <span>{errMsg}</span>
