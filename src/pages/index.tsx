@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useRef, useState } from "react";
 
@@ -6,25 +5,30 @@ import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
 import { ref, uploadBytes } from "@firebase/storage";
 import { storage } from "@/firebase";
-import Head from "next/head";
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [showNav, setShowNav] = useState<boolean>(true);
+  const [showErr, setShowErr] = useState<boolean>(true);
+  const [errMsg, setErrMsg] = useState<string>("");
 
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (typeof screen !== "undefined" && screen.orientation) {
+      lock(screen);
+    }
+  }, []);
+
+  useEffect(() => {
     function handleOrientationChange() {
-      alert("화면회전감지");
       if (typeof screen.orientation !== "undefined") {
         setOrientation(screen.orientation.type);
       }
     }
-    handleOrientationChange();
 
     window.addEventListener("orientationchange", handleOrientationChange);
     return () => {
@@ -44,15 +48,18 @@ export default function Home() {
       await screen.orientation.lock("portrait");
       alert("스크린 회전방지");
     } catch (e) {
+      if (typeof e === "string") {
+        setErrMsg(e);
+      } else if (typeof e === "object") {
+        setErrMsg(JSON.stringify(e));
+      } else {
+        console.log(typeof e);
+      }
+
       alert("실패");
     }
   };
 
-  useEffect(() => {
-    if (typeof screen !== "undefined" && screen.orientation) {
-      lock(screen);
-    }
-  }, []);
   function dataURItoBlob(dataURI: string) {
     const byteString = atob(dataURI.split(",")[1]);
     const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
@@ -85,72 +92,79 @@ export default function Home() {
   };
   return (
     <div>
-      <Head>
-        <meta httpEquiv="ScreenOrientation" content="autoRotate:disabled" />
-      </Head>
-      {url === "" ? (
-        <div>
-          <div style={{ position: "absolute", zIndex: "2" }}>
-            v4
-            {orientaion}
-            <h1>web rtc camera</h1>
-          </div>
-
-          <Camera
-            isMaxResolution={true}
-            onTakePhoto={(dataUri) => {
-              handleTakePhoto(dataUri);
-            }}
-            idealFacingMode="environment"
-          />
-          <br />
-        </div>
+      {showErr ? (
+        <>
+          <span>{errMsg}</span>
+          <button onClick={() => setShowErr(false)}>에러 끄기</button>
+        </>
       ) : (
         <div>
-          <div className={styles.image_container}>
-            <img className={styles.image} src={url} alt="preview" />
-          </div>
+          {url === "" ? (
+            <div>
+              <div style={{ position: "absolute", zIndex: "2" }}>
+                v4
+                {orientaion}
+                <h1>web rtc camera</h1>
+              </div>
 
-          <div className={styles.layout}>
-            <h2>사진을 확인하세요</h2>
-            <div className={`${styles.layout_container} `}>
-              <div
-                className={`${styles.layout_nav}  ${
-                  showNav ? styles.show : styles.hide
-                }`}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  className={styles.layout_nav_grip}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowNav((prev) => !prev);
-                  }}
-                >
-                  <input
-                    onClick={(e) => e.stopPropagation()}
-                    style={{
-                      outline: "none",
-                      width: "8rem",
-                      border: "none",
-                      backgroundColor: "tomato",
-                    }}
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="저장이름 입력"
-                    ref={refInput}
-                  ></input>
+              <Camera
+                isDisplayStartCameraError={true}
+                isMaxResolution={true}
+                onTakePhoto={(dataUri) => {
+                  handleTakePhoto(dataUri);
+                }}
+                idealFacingMode="environment"
+              />
+              <br />
+            </div>
+          ) : (
+            <div>
+              <div className={styles.image_container}>
+                <img className={styles.image} src={url} alt="preview" />
+              </div>
+
+              <div className={styles.layout}>
+                <h2>사진을 확인하세요</h2>
+                <div className={`${styles.layout_container} `}>
+                  <div
+                    className={`${styles.layout_nav}  ${
+                      showNav ? styles.show : styles.hide
+                    }`}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      className={styles.layout_nav_grip}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowNav((prev) => !prev);
+                      }}
+                    >
+                      <input
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          outline: "none",
+                          width: "8rem",
+                          border: "none",
+                          backgroundColor: "tomato",
+                        }}
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="저장이름 입력"
+                        ref={refInput}
+                      ></input>
+                    </div>
+                    <button onClick={() => handleSubmit(url)}>전송</button>
+                    <button onClick={() => setUrl("")}>다시찍기</button>
+                  </div>
                 </div>
-                <button onClick={() => handleSubmit(url)}>전송</button>
-                <button onClick={() => setUrl("")}>다시찍기</button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>
