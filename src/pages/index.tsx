@@ -21,6 +21,7 @@ export default function Home() {
       console.log("스크린 회전방지 시작");
       const res = await screen.orientation.lock("portrait");
       console.log(res);
+      console.log("여기안와?");
       alert("스크린 회전방지");
     } catch (e) {
       console.log(e);
