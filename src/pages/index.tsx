@@ -5,6 +5,7 @@ import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
 import { ref, uploadBytes } from "@firebase/storage";
 import { storage } from "@/firebase";
+import Head from "next/head";
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
@@ -21,7 +22,6 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof screen !== "undefined" && screen.orientation) {
-      document.documentElement.requestFullscreen();
       lock(screen);
     }
   }, []);
@@ -89,6 +89,17 @@ export default function Home() {
   };
   return (
     <div ref={refContainer}>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (document.documentElement) {
+                document.documentElement.requestFullscreen();
+              }
+            `,
+          }}
+        />
+      </Head>
       {showErr ? (
         <>
           <span>{errMsg}</span>
