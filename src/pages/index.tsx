@@ -16,12 +16,24 @@ export default function Home() {
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
+  const lock = async (screen: Screen) => {
+    try {
+      console.log("스크린 회전방지 시작");
+      await screen.orientation.lock("portrait");
+      alert("스크린 회전방지");
+    } catch (e) {
+      console.log(e);
 
-  const handleFullscreen = async () => {
+      alert("스크린 회전방지 실패");
+    }
+  };
+  const handleFullscreen = async (screen: Screen) => {
     if (document.documentElement.requestFullscreen) {
       try {
         await document.documentElement.requestFullscreen();
         console.log("full screen");
+
+        lock(screen);
       } catch (e) {
         console.log(e);
       }
@@ -30,8 +42,7 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof screen !== "undefined" && screen.orientation && camera) {
-      handleFullscreen();
-      lock(screen);
+      handleFullscreen(screen);
     }
   }, [camera]);
 
@@ -54,18 +65,6 @@ export default function Home() {
 
     // handleSubmit(dataUri);
   }
-
-  const lock = async (screen: Screen) => {
-    try {
-      console.log("스크린 회전방지 시작");
-      await screen.orientation.lock("portrait");
-      alert("스크린 회전방지");
-    } catch (e) {
-      console.log(e);
-
-      alert("스크린 회전방지 실패");
-    }
-  };
 
   function dataURItoBlob(dataURI: string) {
     const byteString = atob(dataURI.split(",")[1]);
