@@ -42,12 +42,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (typeof screen !== "undefined" && screen.orientation && camera) {
-      handleFullscreen(screen);
-    }
-  }, [camera]);
-
-  useEffect(() => {
     function handleOrientationChange() {
       if (typeof screen.orientation !== "undefined") {
         setOrientation(screen.orientation.type);
@@ -59,6 +53,11 @@ export default function Home() {
       window.removeEventListener("orientationchange", handleOrientationChange);
     };
   }, []);
+  useEffect(() => {
+    if (typeof screen !== "undefined" && screen.orientation && camera) {
+      handleFullscreen(screen);
+    }
+  }, [camera]);
   function handleTakePhoto(dataUri: string) {
     // Do stuff with the photo...
     console.log("takePhoto");
