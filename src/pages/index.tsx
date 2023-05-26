@@ -48,13 +48,7 @@ export default function Home() {
       await screen.orientation.lock("portrait");
       alert("스크린 회전방지");
     } catch (e) {
-      if (typeof e === "string") {
-        setErrMsg(e);
-      } else if (typeof e === "object") {
-        setErrMsg(JSON.stringify(e));
-      } else {
-        console.log(typeof e);
-      }
+      console.log(e);
 
       alert("실패");
     }
