@@ -6,13 +6,12 @@ import "react-html5-camera-photo/build/css/index.css";
 import { ref, uploadBytes } from "@firebase/storage";
 import { storage } from "@/firebase";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [title, setTitle] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [showNav, setShowNav] = useState<boolean>(true);
-  const [camera, setCamera] = useState<boolean>(false);
-
   const [orientaion, setOrientation] = useState<OrientationType>();
 
   const refInput = useRef<HTMLInputElement>(null);
@@ -23,7 +22,6 @@ export default function Home() {
         setOrientation(screen.orientation.type);
       }
     }
-
     window.addEventListener("orientationchange", handleOrientationChange);
     return () => {
       window.removeEventListener("orientationchange", handleOrientationChange);
