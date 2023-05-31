@@ -29,7 +29,7 @@ const Index: React.FC = () => {
         <a
           href={
             "kakaotalk://web/openExternal?url=" +
-            encodeURIComponent(location.origin + route.asPath)
+            encodeURIComponent(location.origin)
           }
         >
           외부링크
