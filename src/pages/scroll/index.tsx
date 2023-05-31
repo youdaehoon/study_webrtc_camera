@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import styles from "@/styles/ScrollContainer.module.css";
 
-const index: React.FC = () => {
+const Index: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [full, setFull] = useState<{
@@ -77,4 +77,4 @@ const index: React.FC = () => {
   );
 };
 
-export default index;
+export default Index;
