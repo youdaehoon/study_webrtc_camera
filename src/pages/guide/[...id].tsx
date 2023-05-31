@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const index: React.FC = () => {
+const Index: React.FC = () => {
   const [nav, setNav] = useState<Navigator>();
   const [loc, setLoc] = useState<Location>();
 
@@ -31,4 +31,4 @@ const index: React.FC = () => {
   );
 };
 
-export default index;
+export default Index;
