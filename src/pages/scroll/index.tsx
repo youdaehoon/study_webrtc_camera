@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import styles from "@/styles/ScrollContainer.module.css";
 
-const index = () => {
+const index: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [full, setFull] = useState<{
